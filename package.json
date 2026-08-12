@@ -1,0 +1,23 @@
+{
+  "name": "ticketnow-realtime",
+  "version": "1.0.0",
+  "description": "TicketNow - Mapa de asientos en tiempo real (Node.js + WebSocket)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "build": "babel src_app.jsx --out-file public/app.js --presets=@babel/preset-react"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "ws": "^8.21.3"
+  }
+}
