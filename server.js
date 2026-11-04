@@ -1,17 +1,4 @@
-/**
- * TicketNow - Servidor en tiempo real
- * ------------------------------------
- * Node.js + Express (sirve el frontend) + ws (WebSocket puro, sin polling).
- * Mantiene el estado de TODOS los asientos en memoria y lo empuja (push)
- * a todos los clientes conectados en milisegundos ante cualquier cambio.
- *
- * Cumple los criterios de aceptación:
- *  1) Soporta múltiples navegadores conectados simultáneamente (clientes y admin).
- *  2) Una acción en una ventana (seleccionar / reservar / comprar) se refleja
- *     de inmediato en las demás vía broadcast por WebSocket.
- *  3) Es estable bajo flujo continuo de datos (heartbeat, limpieza de
- *     reservas vencidas, manejo de desconexiones) sin colgar el servidor.
- */
+
 
 const express = require("express");
 const http = require("http");
@@ -19,7 +6,8 @@ const path = require("path");
 const { WebSocketServer } = require("ws");
 const { v4: uuidv4 } = require("uuid");
 
-const PORT = process.env.PORT || 3000;
+const DEFAULT_PORT = Number(process.env.PORT || 3001);
+const MAX_PORT = 3100;
 const RESERVATION_MS = 10 * 60 * 1000; // 10 minutos de reserva temporal
 
 // ---------------------------------------------------------------------------
@@ -41,7 +29,7 @@ function buildSeats() {
     for (let r = 1; r <= sector.rows; r++) {
       for (let s = 1; s <= sector.seatsPerRow; s++) {
         const id = `${sector.id}-${r}-${s}`;
-        // Pequeño porcentaje ya vendido al arrancar, para simular un evento real
+        // Pequeño porcentaje ya vendido al ararancar, para simular un evento real
         const preSold = Math.random() < 0.06;
         seats.set(id, {
           id,
@@ -235,6 +223,24 @@ setInterval(() => {
   }
 }, 4000);
 
-server.listen(PORT, () => {
-  console.log(`TicketNow escuchando en http://localhost:${PORT}`);
-});
+function startServer(port) {
+  server.once("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      const nextPort = port + 1;
+      if (nextPort <= MAX_PORT) {
+        console.warn(`Puerto ${port} ocupado. Intentando ${nextPort}...`);
+        startServer(nextPort);
+        return;
+      }
+      console.error(`No hay puertos disponibles desde ${DEFAULT_PORT} hasta ${MAX_PORT}.`);
+      process.exit(1);
+    }
+    throw err;
+  });
+
+  server.listen(port, () => {
+    console.log(`TicketNow escuchando en http://localhost:${port}`);
+  });
+}
+
+startServer(DEFAULT_PORT);

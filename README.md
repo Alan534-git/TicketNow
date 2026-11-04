@@ -13,7 +13,7 @@ npm install
 npm start
 ```
 
-Abrí `http://localhost:3000` en **tres pestañas/navegadores distintos** (2 simulando clientes, 1 simulando el operador/admin viendo el mismo mapa) — la prueba de aceptación del documento (punto 4).
+Abrí `http://localhost:3001` en **tres pestañas/navegadores distintos** (2 simulando clientes, 1 simulando el operador/admin viendo el mismo mapa) — la prueba de aceptación del documento (punto 4).
 
 ## Cómo probar el Criterio de Aceptación (DoD)
 
@@ -37,7 +37,7 @@ ticketnow/
     └── vendor/        # React y ReactDOM guardados localmente (sin internet)
 ```
 
-## Importante: abrí siempre `http://localhost:3000`
+## Importante: abrí siempre `http://localhost:3001`
 
 No abras `public/index.html` con doble clic ni desde el preview interno del
 editor (VS Code Simple Browser, etc.) — esos entornos bloquean WebSockets y
