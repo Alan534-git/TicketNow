@@ -5,7 +5,7 @@ MVP que cumple los requerimientos técnicos del CTO:
 - **Frontend**: interfaz reactiva (React 18, componentes: `Seat`, `SectorBlock`, `App`) con UI dinámica — sin paso de build, corre directo desde `public/index.html`.
 - **Backend**: servidor Node.js (Express + `ws`) que mantiene canales WebSocket persistentes y abiertos con cada cliente. El estado de los asientos vive en memoria (sin bases de datos ni polling).
 - **Fluidez**: cada cambio (seleccionar, liberar, comprar) se **empuja (push)** desde el servidor a todos los clientes conectados en milisegundos vía `broadcastState()`.
-
+hola 
 ## Cómo correrlo
 
 ```bash
